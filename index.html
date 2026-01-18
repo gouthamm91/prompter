@@ -1,0 +1,194 @@
+<!-- <html>
+	<head>
+		<title>Prompt Formatter</title>
+		<script type="text/javascript">
+			function main() {
+				var txt = document.getElementById("incontent").value;
+				var txt = "\n" + txt.trim() + "\n";
+				// loop lines.
+				// var outTxtTmp = txt.split("\n").join('",\n"').split(": ").join('": "')
+				var txtObj = txt.split("\n");
+				var outTxt = txt;
+				for (var i=0; i<txtObj.length; i++) {
+					var currLine = txtObj[i];
+
+					if (currLine.indexOf(":") > -1) {
+						tagName = "\n" + currLine.split(":")[0] + ":";
+						var toTagName = tagName.split("\n").join('",\n"').split(":").join('": "')
+						outTxt = outTxt.split(tagName).join(toTagName);
+					}
+				}
+				var outTxt = `{${outTxt}"}`.split('{",').join('{');
+				document.getElementById('outcontent').value = outTxt;
+			}
+			async function copyToClipboard(text) {
+			  try {
+			    await navigator.clipboard.writeText(text);
+			    console.log('Text copied successfully');
+			  } catch (err) {
+			    console.error('Failed to copy: ', err);
+			  }
+			}
+		</script>
+	</head>
+	<body>
+		<textarea id="incontent" style="height: 49%; width: 99%;" onkeyup="main()"></textarea>
+		<textarea id="outcontent" style="height: 49%; width: 99%;"></textarea>
+		<input type="button" name="copy" value="Copy" onclick="copyToClipboard(document.getElementById('outcontent').value);"/>
+	</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NEON PROMPT FORMATTER</title>
+    <style>
+        /* Neon Dark Blue High-Tech Theme */
+        body {
+            background-color: #020b1a;
+            color: #00d4ff;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            text-shadow: 0 0 10px #00d4ff;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 40%;
+            background: #011224;
+            border: 1px solid #00d4ff;
+            border-radius: 4px;
+            color: #00ffcc;
+            padding: 15px;
+            font-size: 14px;
+            box-shadow: inset 0 0 10px #000, 0 0 5px #00d4ff;
+            outline: none;
+            resize: none;
+        }
+
+        textarea:focus {
+            box-shadow: 0 0 15px #00d4ff;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        input[type="button"] {
+            background-color: #00d4ff;
+            color: #020b1a;
+            border: none;
+            padding: 10px 30px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px #00d4ff;
+            transition: 0.3s;
+        }
+
+        input[type="button"]:hover {
+            background-color: #00ffcc;
+            box-shadow: 0 0 25px #00ffcc;
+        }
+
+        .label {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            color: #55aaff;
+        }
+    </style>
+    <script type="text/javascript">
+        function formatPrompt() {
+            const input = document.getElementById("incontent").value;
+            if (!input.trim()) {
+                document.getElementById('outcontent').value = "";
+                return;
+            }
+
+            const lines = input.trim().split("\n");
+            let resultArr = lines.map(line => {
+                // Check if the line contains a colon to treat as a key-value pair
+                if (line.includes(":")) {
+                    let parts = line.split(":");
+                    let key = parts.shift().trim();
+                    let value = parts.join(":").trim();
+                    return `"${key}": "${value}"`;
+                }
+                // Otherwise, treat the whole line as a string
+                return `"${line.trim()}"`;
+            });
+
+            const finalJson = "{\n  " + resultArr.join(",\n  ") + "\n}";
+            document.getElementById('outcontent').value = finalJson;
+        }
+
+        async function copyToClipboard() {
+            const text = document.getElementById('outcontent').value;
+            try {
+                await navigator.clipboard.writeText(text);
+                alert('Copied to Neural Link (Clipboard)');
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h2>System Terminal</h2>
+
+    <div class="container">
+        <div class="field-wrapper" style="height: 45%">
+            <div class="label">INPUT_STREAM</div>
+            <textarea id="incontent" placeholder="Enter raw prompt here..." style="height: 100%" onkeyup="formatPrompt()">
+CONTEXT:
+TASK/AIM: 
+ATTRIBUTES:
+LANGUAGE:
+OUTPUT_FORMAT:
+            </textarea>
+        </div>
+
+        <div class="field-wrapper" style="height: 45%">
+            <div class="label">FORMATTED_JSON_OUTPUT</div>
+            <textarea id="outcontent" style="height: 100%" readonly placeholder="Output will appear here..."></textarea>
+        </div>
+
+        <div class="controls">
+            <input type="button" value="Copy Data" onclick="copyToClipboard()"/>
+        </div>
+    </div>
+
+</body>
+</html>
