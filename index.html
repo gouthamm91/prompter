@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prompt2JSON Converter</title>
+    <title>Prompt2JSON Converter1.0.1</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -263,7 +263,7 @@ IMPORTANT_NOTE: Do not use Edit function call to create a new file.</textarea>
                 }
             }
             
-            output.value = JSON.stringify(jsonObject, null, 2);
+            output.value = JSON.stringify(jsonObject, null, 2).replace(/\n/g, "");
         }
 
         function copyToClipboard() {
